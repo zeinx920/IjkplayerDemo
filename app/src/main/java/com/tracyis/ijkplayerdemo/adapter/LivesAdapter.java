@@ -11,17 +11,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tracyis.ijkplayerdemo.R;
-import com.tracyis.ijkplayerdemo.entity.Lives;
+import com.tracyis.ijkplayerdemo.entity.YinkeLives;
 
 import java.util.List;
 
 public class LivesAdapter extends BaseAdapter {
 
-    private List<Lives> mLives;
+    private List<YinkeLives> mLives;
     private Context mContext;
     private LayoutInflater mInflater;
 
-    public LivesAdapter(Context context, List<Lives> lives) {
+    public LivesAdapter(Context context, List<YinkeLives> lives) {
         mLives = lives;
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
@@ -53,12 +53,11 @@ public class LivesAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Lives lives = mLives.get(position);
-        holder.tvNameAndCity.setText("来自" + lives.getCity() + "的" + (TextUtils.isEmpty(lives.getName()) ? " 未起名 " : lives.getName()) + "距离您" + lives.getDistance());
+        YinkeLives yinkeLives = mLives.get(position);
+        holder.tvNameAndCity.setText("来自" + yinkeLives.getCity() + "的" + (TextUtils.isEmpty(yinkeLives.getName()) ? " 未起名 " : yinkeLives.getName()) + "距离您" + yinkeLives.getDistance());
         Glide.with(mContext)
-                .load(lives.getCreator().getPortrait())
+                .load(yinkeLives.getCreator().getPortrait())
                 .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
                 .crossFade()
                 .into(holder.ivPortrait);
 
