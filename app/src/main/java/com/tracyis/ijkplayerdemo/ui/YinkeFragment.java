@@ -1,9 +1,9 @@
 package com.tracyis.ijkplayerdemo.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.tracyis.ijkplayerdemo.Constant;
 import com.tracyis.ijkplayerdemo.R;
 import com.tracyis.ijkplayerdemo.VideoViewActivity;
@@ -30,19 +31,21 @@ import java.util.List;
 /**
  * Created by Trasys on 2017/5/13.
  */
-public class YinkeFragment extends Fragment{
+public class YinkeFragment extends Fragment {
     private static final String TAG = "YinkeFragment";
     private GridView mGvLivingList;
+    private SpinKitView mSkv;
     private LivesAdapter mAdapter;
     private List<YinkeLives> mYinkeLivesList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View  view = View.inflate(getContext(), R.layout.fragment_yinke,null);
+        View view = View.inflate(getContext(), R.layout.fragment_yinke, null);
 
 
-        mGvLivingList = (GridView)view.findViewById(R.id.gvLivingList);
+        mGvLivingList = (GridView) view.findViewById(R.id.gvLivingList);
+        mSkv = (SpinKitView) view.findViewById(R.id.spin_kit);
 
         mYinkeLivesList = new ArrayList<>();
         mAdapter = new LivesAdapter(getContext(), mYinkeLivesList);
@@ -52,7 +55,7 @@ public class YinkeFragment extends Fragment{
         mGvLivingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(),VideoViewActivity.class);
+                Intent intent = new Intent(getContext(), VideoViewActivity.class);
                 intent.putExtra("stream_addr", mYinkeLivesList.get(position).getStream_addr());
                 startActivity(intent);
             }
@@ -63,17 +66,18 @@ public class YinkeFragment extends Fragment{
 
     }
 
-    private class RequestLivingTask extends AsyncTask<String,Void,List<YinkeLives>> {
+    private class RequestLivingTask extends AsyncTask<String, Void, List<YinkeLives>> {
 
-        ProgressDialog mProgressDialog ;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressDialog = ProgressDialog.show(getActivity(),"加载中……",null,false);
+            mSkv.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected List<YinkeLives> doInBackground(String... params) {
+            SystemClock.sleep(1000);
+
             String url = params[0];
             List<YinkeLives> liveList = new ArrayList<>();
             try {
@@ -98,8 +102,8 @@ public class YinkeFragment extends Fragment{
             super.onPostExecute(lives);
             mYinkeLivesList.addAll(lives);
             mAdapter.notifyDataSetChanged();
+            mSkv.setVisibility(View.GONE);
 
-            mProgressDialog.dismiss();
         }
     }
 

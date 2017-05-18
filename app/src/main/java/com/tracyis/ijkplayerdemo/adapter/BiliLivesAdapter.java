@@ -31,7 +31,6 @@ public class BiliLivesAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        Log.d(TAG, "getCount: "+mLives.size());
         return mLives.size();
     }
 
@@ -58,9 +57,9 @@ public class BiliLivesAdapter extends BaseAdapter {
 
         BiliLives.DataBean biliLives = mLives.get(position);
         Log.d(TAG, "getView: "+biliLives.playurl);
-        holder.tvNameAndCity.setText("来自" + biliLives + "的" + (TextUtils.isEmpty(biliLives.area) ? " 未起名 " : biliLives.cover + "距离您" + biliLives.title));
+        holder.tvNameAndCity.setText("来自" + biliLives.area + "的" + (TextUtils.isEmpty(biliLives.owner.name) ? " 未起名 " : biliLives.owner.name+"正在直播"));
         Glide.with(mContext)
-                .load(biliLives.accept_quality)
+                .load(biliLives.cover.src)
                 .centerCrop()
                 .crossFade()
                 .into(holder.ivPortrait);

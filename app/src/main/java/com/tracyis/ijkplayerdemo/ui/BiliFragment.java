@@ -1,9 +1,9 @@
 package com.tracyis.ijkplayerdemo.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.gson.Gson;
 import com.tracyis.ijkplayerdemo.Constant;
 import com.tracyis.ijkplayerdemo.R;
@@ -30,6 +31,7 @@ import java.util.List;
  */
 public class BiliFragment extends Fragment {
     private static final String TAG = "BiliFragment";
+    private SpinKitView mSkv;
     private GridView mGvLivingList;
     private BiliLivesAdapter mAdapter;
     private List<BiliLives.DataBean> mBiliLivesList;
@@ -41,6 +43,7 @@ public class BiliFragment extends Fragment {
 
 
         mGvLivingList = (GridView) view.findViewById(R.id.gvBiliLivingList);
+        mSkv = (SpinKitView) view.findViewById(R.id.spin_kit);
 
         mBiliLivesList = new ArrayList<>();
         mAdapter = new BiliLivesAdapter(getContext(), mBiliLivesList);
@@ -63,36 +66,40 @@ public class BiliFragment extends Fragment {
 
     private class RequestLivingTask extends AsyncTask<String, Void, List<BiliLives.DataBean>> {
 
-        ProgressDialog mProgressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressDialog = ProgressDialog.show(getActivity(), "加载中……", null, false);
+            mSkv.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected List<BiliLives.DataBean> doInBackground(String... params) {
+            SystemClock.sleep(1000);
+
+            List<BiliLives.DataBean> lives = new ArrayList<>();
             String url = params[0];
             try {
                 String liveurl = HttpUtils.getInstance().get(url);
                 Gson gson = new Gson();
                 BiliLives biliLives = gson.fromJson(liveurl, BiliLives.class);
-                mBiliLivesList = biliLives.data;
+                lives = biliLives.data;
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return mBiliLivesList;
+            return lives;
         }
 
         @Override
         protected void onPostExecute(List<BiliLives.DataBean> lives) {
-            super.onPostExecute(lives);
+
             mBiliLivesList.addAll(lives);
-            mAdapter.notifyDataSetChanged();
-            Log.d(TAG, "onPostExecute: "+mAdapter.getCount());
-            mProgressDialog.dismiss();
+//            mAdapter.notifyDataSetChanged();
+            mGvLivingList.setAdapter(mAdapter);
+            Log.d(TAG, "onPostExecute: "+lives.size() + " mAdapter "+mAdapter.getCount());
+            mSkv.setVisibility(View.GONE);
+
         }
     }
 }
