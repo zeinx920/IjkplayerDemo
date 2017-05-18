@@ -2,7 +2,7 @@ package com.tracyis.ijkplayerdemo.entity;
 
 import org.json.JSONObject;
 
-public class Lives {
+public class YinkeLives {
 
 
     /**
@@ -44,7 +44,7 @@ public class Lives {
     private int multi;
     private int rotate;
 
-    public Lives(JSONObject live) {
+    public YinkeLives(JSONObject live) {
         this.stream_addr = live.optString("stream_addr");
         this.name = live.optString("name");
         this.city = live.optString("city");

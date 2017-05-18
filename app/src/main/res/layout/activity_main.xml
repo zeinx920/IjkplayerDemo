@@ -1,18 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
-    <GridView
-        android:id="@+id/gvLivingList"
-        android:numColumns="2"
-        android:horizontalSpacing="6dp"
-        android:verticalSpacing="6dp"
+        <TextView
+            android:background="@drawable/tv_bg"
+            android:id="@+id/tv_yinke"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="映客直播"/>
+
+        <TextView
+            android:background="@drawable/tv_bg"
+            android:id="@+id/tv_bili"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="B站直播"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
 
-</RelativeLayout>
+</LinearLayout>
